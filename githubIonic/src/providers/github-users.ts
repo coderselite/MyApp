@@ -7,14 +7,14 @@ import { User } from '../models/user';
 @Injectable()
 export class GithubUsers {
 
-  githubApiUrl = 'https://api.github.com';
+  githubApiUrl = 'http://localhost:8080/WashupApp';
 
   constructor(public http: Http) {
     console.log('Hello GithubUsers Provider');
   }
 
   load():Observable<User[]>{
-    return this.http.get(`${this.githubApiUrl}/users`)
+    return this.http.get(`${this.githubApiUrl}/getAllUsers`)
     .map(res => <User[]>res.json());
   }
 

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, App } from 'ionic-angular';
 import { AuthService} from '../../providers/auth-service';
 import { HomePage } from '../home/home';
-import { UsersPage } from '../users/users';
+import { RegisterPage } from '../register/register';
 
 @Component({
   selector: 'page-otp',
@@ -21,7 +21,7 @@ export class OtpPage {
         setTimeout(() =>{
           this.loading.dismiss();
           
-          this.nav.setRoot(UsersPage);
+          this.nav.setRoot(RegisterPage);
         });
  }else{
         this.showError('Access denied');

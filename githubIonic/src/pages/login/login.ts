@@ -11,7 +11,7 @@ import { OtpPage } from '../otp/otp';
 export class LoginPage {
   loading: Loading;
 
-  registerCredentials = { mobile: ''};
+  loginCredentials = { mobile: ''};
 
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
 

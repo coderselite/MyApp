@@ -1,14 +1,38 @@
+
 <ion-header>
   <ion-navbar>
-    <button ion-button icon-only menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Register</ion-title>
+    <ion-title>register</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
-  <h3>Register page</h3>
+<ion-content class="login-content" padding>
+  <div class="register-box">
+    <form (ngSubmit)="postRequest()" #registerForm="ngForm">
+      <ion-row>
+        <ion-col>
+          <ion-list inset>
+            <ion-item>
+              <ion-input type="text" placeholder="First Name" name="firstName" [(ngModel)]="register.firstName" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input type="text" placeholder="Last Name" name="lastName" [(ngModel)]="register.lastName" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input type="text" placeholder="Mobile No." name="mobile" [(ngModel)]="register.mobile" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input type="text" placeholder="otp" name="otp" [(ngModel)]="register.otp" required></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="signup-col">
+          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">REGISTER</button>
+          <!--<button ion-button class="register-btn" block clear (click)="createAccount()">Create New Account</button>-->
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
 </ion-content>
