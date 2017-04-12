@@ -3,39 +3,40 @@ import { NavController, NavParams,  AlertController, LoadingController, Loading,
 import { AuthService} from '../../providers/auth-service';
 import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
-import { LoginPage } from '../login/login';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'page-otp',
   templateUrl: 'otp.html'
 })
-export class OtpPage {
-  mobile : string;
-  loginPage : LoginPage;
-  loading : Loading;
-  userOtp = { otp: ''};
-  constructor(public nav: NavController, private navParams : NavParams, private auth: AuthService, private alertCtrl : AlertController, private loadingCtrl : LoadingController, private app: App ) {
-    
-  }
 
-    public verify() {
-      this.mobile = this.navParams.get('param1');
-      console.log("test verify"+this.mobile);
-    
+export class OtpPage {
+  userOtp = { otp: ''};
+  mobile : string;
+  loading : Loading;
+  user : User;
+  
+  constructor(public nav: NavController, private navParams : NavParams, private auth: AuthService, private alertCtrl : AlertController, private loadingCtrl : LoadingController ) {  }
+
+  public verify() {
+    this.mobile = this.navParams.get('param1');
     this.showLoading()
-    this.auth.login(this.userOtp).subscribe(allowed =>{
-      if (allowed){
-        setTimeout(() =>{
-          this.loading.dismiss();          
-          this.nav.setRoot(RegisterPage);
-        });
- }else{
+    if (this.auth.authenticateUser(this.mobile,this.userOtp.otp)){
+      this.auth.verifyMobile(this.mobile).subscribe(user => {
+        console.log("inside verify()")
+        this.user = user;
+        if(this.user != null){
+            this.loading.dismiss();
+            this.nav.setRoot( HomePage );
+          } else {
+            this.loading.dismiss();
+            this.nav.setRoot( RegisterPage );
+          }
+        }
+         );        
+    }else{
         this.showError('Access denied');
-      }
-    },
-    error => {
-      this.showError(error);
-    });
+    }     
   }
 
   showLoading(){
@@ -49,7 +50,6 @@ export class OtpPage {
     setTimeout(()=>{
       this.loading.dismiss();
     });
-
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: text,
@@ -61,5 +61,21 @@ export class OtpPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
-
 }
+
+
+//----------------------------------------------------
+
+    // this.auth.login(this.userOtp).subscribe(allowed =>{
+    //   if (allowed){
+    //     setTimeout(() =>{
+    //       this.loading.dismiss();          
+    //       this.nav.setRoot(RegisterPage);
+    //     });
+    //   }else{
+    //       this.showError('Access denied');
+    //   }
+    // },
+    // error => {
+    //   this.showError(error);
+    // });

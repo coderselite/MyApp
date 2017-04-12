@@ -19,10 +19,6 @@
         <ion-col>
           <ion-list inset>
 
-            <!--<ion-item>
-              <ion-input type="text" placeholder="Mobile No." name="mobile" [(ngModel)]="registerCredentials.mobile" required></ion-input>
-            </ion-item>-->
-
             <ion-item>
               <ion-input type="password" placeholder="otp" name="otp" [(ngModel)]="userOtp.otp" required></ion-input>
             </ion-item>
@@ -34,6 +30,11 @@
         <ion-col class="signup-col">
           <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Verify</button>
           <!--<button ion-button class="register-btn" block clear (click)="createAccount()">Create New Account</button>-->
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="signup-col">
+          <a href="#" >Resend OTP</a>
         </ion-col>
       </ion-row>
     </form>

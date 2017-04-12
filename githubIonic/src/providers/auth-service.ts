@@ -22,8 +22,8 @@ export class AuthService {
       console.log('Hello auth-services Provider');
     }
 
-    verifyMobile(mobileNo):Observable<User>{
-      console.log('auth-services verify mobile'+mobileNo);
+    verifyMobile(mobileNo){
+      console.log('auth-services verify mobile'+mobileNo);       
       return this.http.get(this.githubApiUrl+"/getUser/mobile/"+mobileNo)
       .map(res => <User>res.json());
     }
@@ -53,16 +53,11 @@ export class AuthService {
         });
       }
     }
-    /**
-     * name
-     */
-    public getUserInfo(): CurrentUser {
-      return this.currentUser;  
-    }
 
-    /**
-     * name
-     */
+    public authenticateUser(mobile, otp){
+      return true;
+    } 
+
     public logout() {
       return Observable.create(observer =>{
         this.currentUser = null;
