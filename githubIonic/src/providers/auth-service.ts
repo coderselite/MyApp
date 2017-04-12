@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
+import { User } from '../models/user';
 
-export class User {
+export class CurrentUser {
   name : string;
   email : string;
 
@@ -13,21 +15,18 @@ export class User {
 }
 @Injectable()
 export class AuthService {
-    currentUser: User;
+    githubApiUrl = 'http://localhost:8080/WashupApp';
+    currentUser: CurrentUser;  
 
-    // public login(credentials){
-    //   if (credentials.email === null || credentials.password === null){
-    //     return Observable.throw("Please insert credentials");
-    //   } else {
-    //     console.log('inside auth services login');
-    //     return Observable.create(observer => {
-    //       let access = (credentials.otp === "123456" && credentials.mobile === "9921409927");
-    //       this.currentUser = new User('Vijay', 'vijayrk1122@gmail.com');
-    //       observer.next(access);
-    //       observer.complete();
-    //     });
-    //   }
-    // }
+    constructor(public http: Http) {
+      console.log('Hello auth-services Provider');
+    }
+
+    verifyMobile(mobileNo):Observable<User>{
+      console.log('auth-services verify mobile'+mobileNo);
+      return this.http.get(this.githubApiUrl+"/getUser/mobile/"+mobileNo)
+      .map(res => <User>res.json());
+    }
 
     public login(credentials){
       console.log('inside auth-service');
@@ -37,7 +36,7 @@ export class AuthService {
         console.log('inside auth service login');
         return Observable.create( observer => {
           let access = (credentials.otp === "123456" );
-          this.currentUser = new User('Vijay', 'vijayrk1122@gmail.com');
+          this.currentUser = new CurrentUser('Vijay', 'vijayrk1122@gmail.com');
           observer.next(access);
           observer.complete();
         });
@@ -57,7 +56,7 @@ export class AuthService {
     /**
      * name
      */
-    public getUserInfo(): User {
+    public getUserInfo(): CurrentUser {
       return this.currentUser;  
     }
 

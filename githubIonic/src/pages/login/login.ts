@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { RegisterPage } from '../register/register';
+import { HomePage } from '../home/home'
 import { OtpPage } from '../otp/otp';
+import { User } from '../../models/user';
 @Component({
 
   selector: 'page-login',
@@ -12,23 +14,33 @@ export class LoginPage {
   loading: Loading;
 
   loginCredentials = { mobile: ''};
+  user : User;
 
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {}
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+
+  }
 
   public createAccount(){
     this.nav.push(RegisterPage);
   }
 
   public login(){
-    console.log('inside login');
-    // this.showLoading()
-    // if (this.registerCredentials.mobile === null){
-    //   this.loading.dismiss();
-    //   this.showError("Please Insert credentials");
-    // } else {  
-      this.nav.push( OtpPage );
-    
-    
+    // this.auth.verifyMobile(this.loginCredentials.mobile).subscribe(user => {
+    //     this.user = user;
+    //     if(this.user != null){
+    //       this.nav.setRoot( HomePage );
+    //       } else {
+    //       this.nav.push( OtpPage );
+    //     }
+    // })  
+       this.nav.push( OtpPage,{
+         param1: this.loginCredentials.mobile
+       } );    
+  }
+
+  public getMobile(){
+    console.log(this.loginCredentials.mobile);
+    return this.loginCredentials;
   }
 
   

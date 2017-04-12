@@ -1,26 +1,32 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Loading, App } from 'ionic-angular';
+import { NavController, NavParams,  AlertController, LoadingController, Loading, App } from 'ionic-angular';
 import { AuthService} from '../../providers/auth-service';
 import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
+import { LoginPage } from '../login/login';
 
 @Component({
   selector: 'page-otp',
   templateUrl: 'otp.html'
 })
 export class OtpPage {
+  mobile : string;
+  loginPage : LoginPage;
   loading : Loading;
   userOtp = { otp: ''};
-  constructor(public nav: NavController, private auth: AuthService, private alertCtrl : AlertController, private loadingCtrl : LoadingController, private app: App ) {}
+  constructor(public nav: NavController, private navParams : NavParams, private auth: AuthService, private alertCtrl : AlertController, private loadingCtrl : LoadingController, private app: App ) {
+    
+  }
 
     public verify() {
-    console.log('inside otp.ts');
+      this.mobile = this.navParams.get('param1');
+      console.log("test verify"+this.mobile);
+    
     this.showLoading()
     this.auth.login(this.userOtp).subscribe(allowed =>{
       if (allowed){
         setTimeout(() =>{
-          this.loading.dismiss();
-          
+          this.loading.dismiss();          
           this.nav.setRoot(RegisterPage);
         });
  }else{

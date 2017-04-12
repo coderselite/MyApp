@@ -9,7 +9,7 @@ import { UsersPage } from '../users/users';
 })
 export class RegisterPage {
 
-  register = {firstName:'', lastName:'', mobile:'', otp:''};
+  register = {firstName:'', lastName:'', mobile:'', email:'', referralCode: ''};
 
   constructor(public nav: NavController, public navParams: NavParams, public http:Http) {   }
 
@@ -22,9 +22,8 @@ export class RegisterPage {
       firstName:this.register.firstName,
       lastName:this.register.lastName,
       mobile:this.register.mobile,
-      otp:this.register.otp
     }
-    this.http.post("http://localhost:8080/WashupApp/addUser",postParams,headers)
+    this.http.post("http://localhost:8080/WashupApp/addUser",postParams,options)
     .subscribe(data =>{
       console.log(data['_body']);
     },error =>{
