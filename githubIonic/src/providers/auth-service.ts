@@ -17,10 +17,11 @@ export class AuthService {
     verifyMobile(mobileNo){
       console.log('auth-services verify mobile'+mobileNo);       
       return this.http.get(this.washUpApiUrl+"/validateUser/mobile/"+mobileNo)
-      .map(res => res.json.toString());
+      .map(res => res.text());
     }
 
-    public authenticateUser( otp, mobile ){
+    authenticateUser( otp, mobile ){
+      console.log(otp+" "+mobile);
       var headers = new Headers();
       headers.append("Accept", "application/json");
       headers.append("Content-Type", "application/json");
@@ -29,12 +30,8 @@ export class AuthService {
         otp:otp,
         mobile:mobile,
       }
-      this.http.post(this.washUpApiUrl+"/validateOtp", postParams, options).subscribe( data =>{
-        console.log(data['body']);
-        this.flag = data.toString();
-        console.log(this.flag);
-      })
-      return this.flag;
+      let data = this.http.post(this.washUpApiUrl+"/validateOtp", postParams, options)
+      return data.map(res=>res.text());
     } 
 
     public RegisterUser(register){
@@ -64,3 +61,10 @@ export class AuthService {
       });      
     }
 }
+
+
+
+// .subscribe( data =>{
+//         console.log(typeof(data.text()));
+//         console.log(this.flag);
+//       });

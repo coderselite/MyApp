@@ -4,6 +4,7 @@ import { AuthService} from '../../providers/auth-service';
 import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
 import { User } from '../../models/user';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'page-otp',
@@ -23,25 +24,26 @@ export class OtpPage {
   public verify() {
     this.mobile = this.navParams.get('param1');
     this.userType = this.navParams.get('param2');
-    this.showLoading()
-    this.flag = this.auth.authenticateUser(this.mobile,this.userOtp.otp);
-    if(this.flag){
-      if(this.userType == "RegisteredUser"){
-        setTimeout(()=>{
-               this.loading.dismiss();
-               this.nav.setRoot( HomePage );
-             });
+    console.log("otp userTypr = "+this.userType);
+    this.showLoading();
+    this.auth.authenticateUser(this.userOtp.otp, this.mobile).subscribe(flag=>{
+      console.log("otp flag = "+flag);
+      if(flag == "true"){
+        if(this.userType == "Registered User"){
+          setTimeout(()=>{
+            this.loading.dismiss();
+            this.nav.setRoot( HomePage );
+          });
+        }else{
+          setTimeout(()=>{
+            this.loading.dismiss();
+            this.nav.setRoot( RegisterPage );
+          });
+        }              
       }else{
-        setTimeout(()=>{
-               this.loading.dismiss();
-               this.nav.setRoot( RegisterPage );
-             });
+          this.showError('Access denied');
       }
-              
-    }else{
-      this.loading.dismiss(); 
-      this.showError('Access denied');
-    }     
+    })           
   }
 
   showLoading(){

@@ -19,12 +19,12 @@ export class LoginPage {
   public login(){
     this.auth.verifyMobile(this.loginCredentials.mobile).subscribe(userType=>{
       this.userType = userType;
-      console.log(this.userType+" test");
-    })
-    this.nav.push( OtpPage,{
-      param1: this.loginCredentials.mobile,
-      param2:this.userType
-    } );    
+      console.log(this.userType+" test1");
+      this.nav.push( OtpPage,{
+        param1: this.loginCredentials.mobile,
+        param2:this.userType
+      });
+    })   
   }
 
   showLoading(){
