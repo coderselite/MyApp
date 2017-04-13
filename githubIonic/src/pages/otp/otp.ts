@@ -13,29 +13,34 @@ import { User } from '../../models/user';
 export class OtpPage {
   userOtp = { otp: ''};
   mobile : string;
+  userType : string;
   loading : Loading;
   user : User;
+  flag : string;
   
   constructor(public nav: NavController, private navParams : NavParams, private auth: AuthService, private alertCtrl : AlertController, private loadingCtrl : LoadingController ) {  }
 
   public verify() {
     this.mobile = this.navParams.get('param1');
+    this.userType = this.navParams.get('param2');
     this.showLoading()
-    if (this.auth.authenticateUser(this.mobile,this.userOtp.otp)){
-      this.auth.verifyMobile(this.mobile).subscribe(user => {
-        console.log("inside verify()")
-        this.user = user;
-        if(this.user != null){
-            this.loading.dismiss();
-            this.nav.setRoot( HomePage );
-          } else {
-            this.loading.dismiss();
-            this.nav.setRoot( RegisterPage );
-          }
-        }
-         );        
+    this.flag = this.auth.authenticateUser(this.mobile,this.userOtp.otp);
+    if(this.flag){
+      if(this.userType == "RegisteredUser"){
+        setTimeout(()=>{
+               this.loading.dismiss();
+               this.nav.setRoot( HomePage );
+             });
+      }else{
+        setTimeout(()=>{
+               this.loading.dismiss();
+               this.nav.setRoot( RegisterPage );
+             });
+      }
+              
     }else{
-        this.showError('Access denied');
+      this.loading.dismiss(); 
+      this.showError('Access denied');
     }     
   }
 
@@ -79,3 +84,23 @@ export class OtpPage {
     // error => {
     //   this.showError(error);
     // });
+
+
+    // this.auth.verifyMobile(this.mobile).subscribe(user => {
+    //     console.log("inside verify()")
+    //     this.flag = user;
+    //     if(this.flag == "RegisteredUser"){
+    //         setTimeout(()=>{
+    //           this.loading.dismiss();
+    //           this.nav.setRoot( HomePage );
+    //         });            
+    //       } else if( this.flag == "NewUser" ){
+    //        setTimeout(()=>{
+    //           this.loading.dismiss();
+    //           this.nav.setRoot( RegisterPage );
+    //         });
+    //       }
+    //     }, 
+    //     error =>{
+    //         this.showError(error);              
+    //     });

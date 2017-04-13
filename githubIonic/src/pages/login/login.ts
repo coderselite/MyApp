@@ -3,6 +3,7 @@ import { NavController, AlertController, LoadingController, Loading } from 'ioni
 import { RegisterPage } from '../register/register';
 import { HomePage } from '../home/home'
 import { OtpPage } from '../otp/otp';
+import { AuthService } from '../../providers/auth-service';
 @Component({
 
   selector: 'page-login',
@@ -10,13 +11,19 @@ import { OtpPage } from '../otp/otp';
 })
 export class LoginPage {
   loginCredentials = { mobile: ''};
-  loading: Loading;  
+  loading: Loading; 
+  userType : string; 
 
-  constructor(private nav: NavController, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {  }
+  constructor(private nav: NavController, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private auth : AuthService) {  }
 
-  public login(){  
+  public login(){
+    this.auth.verifyMobile(this.loginCredentials.mobile).subscribe(userType=>{
+      this.userType = userType;
+      console.log(this.userType+" test");
+    })
     this.nav.push( OtpPage,{
-      param1: this.loginCredentials.mobile
+      param1: this.loginCredentials.mobile,
+      param2:this.userType
     } );    
   }
 
